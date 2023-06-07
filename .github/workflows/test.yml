@@ -36,8 +36,6 @@ jobs:
           channels: conda-forge
           channel-priority: true
 
-      - uses: ilammy/msvc-dev-cmd@v1
-
       - name: Show conda installation info
         run: conda info
 
@@ -59,12 +57,15 @@ jobs:
 
       - name: Configure cmake (windows)
         if: matrix.os == 'windows-latest'
+        uses: ilammy/msvc-dev-cmd@v1
         working-directory: ${{ github.workspace }}\build
-        shell: pwsh
+        # shell: pwsh
+        # run: |
+        #   cmake .. `
+        #     -DCMAKE_INSTALL_PREFIX:PATH=$env:CONDA_PREFIX `
+        #     -DCMAKE_BUILD_TYPE=${{ matrix.build-type }}
         run: |
-          cmake .. `
-            -DCMAKE_INSTALL_PREFIX:PATH=$env:CONDA_PREFIX `
-            -DCMAKE_BUILD_TYPE=${{ matrix.build-type }}
+          cmake .. -DCMAKE_INSTALL_PREFIX:PATH=$env:CONDA_PREFIX -DCMAKE_BUILD_TYPE=${{ matrix.build-type }}
 
       - name: Build
         working-directory: ${{ github.workspace }}/build
