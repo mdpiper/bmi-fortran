@@ -1,0 +1,10 @@
+name: Why you not work
+jobs:
+  test:
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ilammy/msvc-dev-cmd@v1
+      - name: Build something requiring CL.EXE
+        run: |
+          cmake -E make_directory build
+          cmake --build . --target install --config Release
