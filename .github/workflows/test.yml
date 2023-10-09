@@ -13,9 +13,9 @@ jobs:
 
     runs-on: ${{ matrix.os }}
 
-    # defaults:
-    #   run:
-    #     shell: bash -l {0}
+    defaults:
+      run:
+        shell: bash -l {0}
 
     env:
       BMI_VERSION: 2_0
