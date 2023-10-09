@@ -38,11 +38,11 @@ jobs:
 
       - name: Install compilers (unix)
         if: matrix.os != 'windows-latest'
-        run: mamba install -n testing -c conda-forge fortran-compiler
+        run: mamba install -c conda-forge fortran-compiler
 
       - name: Install compilers (windows)
         if: matrix.os == 'windows-latest'
-        run: mamba install -n testing -c conda-forge fortran-compiler cxx-compiler
+        run: mamba install -c conda-forge fortran-compiler cxx-compiler
 
       - name: Show conda installation info
         run: |
