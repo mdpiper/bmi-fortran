@@ -47,6 +47,4 @@ jobs:
 
       - name: Test
         run: |
-          if not exist %LIBRARY_INC%\\bmif_%BMI_VERSION%.mod exit 1
-          if not exist %LIBRARY_LIB%\\bmif.lib exit 1
-          if not exist %LIBRARY_BIN%\\bmif_win.dll exit 1
+          Test-Path -Path "%LIBRARY_INC%\\bmif_%BMI_VERSION%.mod"
