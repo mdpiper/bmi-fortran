@@ -26,16 +26,10 @@ jobs:
           micromamba-version: latest
           environment-name: testing
           create-args: >-
-            mamba
             cmake
             fortran-compiler
             cxx-compiler
             vs2019_win-64
-
-      - name: Show conda installation info
-        run: |
-          mamba info
-          mamba list
 
       - uses: ilammy/msvc-dev-cmd@v1
 
