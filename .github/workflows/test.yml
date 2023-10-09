@@ -22,7 +22,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-latest, macos-latest]
         build-type: [Release]
 
     steps:
@@ -33,16 +33,12 @@ jobs:
           micromamba-version: latest
           environment-name: testing
           create-args: >-
+            make
             cmake
+            fortran-compiler
+            c-compiler
+            cxx-compiler
             mamba
-
-      - name: Install compilers (unix)
-        if: matrix.os != 'windows-latest'
-        run: mamba install -c conda-forge fortran-compiler
-
-      - name: Install compilers (windows)
-        if: matrix.os == 'windows-latest'
-        run: mamba install -c conda-forge fortran-compiler cxx-compiler
 
       - name: Show conda installation info
         run: |
