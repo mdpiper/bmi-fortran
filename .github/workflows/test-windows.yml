@@ -46,6 +46,7 @@ jobs:
         run: cmake --build . --target install --config ${{ matrix.build-type }}
 
       - name: Test
+        working-directory: ${{ github.workspace }}/build
         run: |
           Test-Path -Path "%LIBRARY_INC%\\bmif_%BMI_VERSION%.mod"
           Test-Path -Path "%CONDA_PREFIX%/include/bmif_%BMI_VERSION%.mod"
