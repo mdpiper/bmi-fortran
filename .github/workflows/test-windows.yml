@@ -8,15 +8,10 @@ jobs:
       github.event_name == 'push' || github.event.pull_request.head.repo.full_name !=
       github.repository
 
-    runs-on: ${{ matrix.os }}
+    runs-on: windows-latest
 
     env:
       BMI_VERSION: 2_0
-
-    strategy:
-      matrix:
-        os: [windows-latest]
-        build-type: [Release]
 
     steps:
       - uses: actions/checkout@v4
@@ -39,18 +34,16 @@ jobs:
       - name: Configure cmake
         working-directory: ${{ github.workspace }}/build
         run: |
-          cmake .. -G "NMake Makefiles" -DCMAKE_INSTALL_PREFIX=%CONDA_PREFIX% -DCMAKE_BUILD_TYPE=${{ matrix.build-type }}
+          cmake .. -G "NMake Makefiles" -DCMAKE_INSTALL_PREFIX=%CONDA_PREFIX% -DCMAKE_BUILD_TYPE=Release
 
       - name: Build
         working-directory: ${{ github.workspace }}/build
-        run: cmake --build . --target install --config ${{ matrix.build-type }}
+        run: cmake --build . --target install --config Release }}
 
       - name: Test
         working-directory: ${{ github.workspace }}/build
         run: |
-          pwd
-          Test-Path -Path "%LIBRARY_INC%\\bmif_%BMI_VERSION%.mod"
-          Test-Path -Path "%CONDA_PREFIX%/include/bmif_%BMI_VERSION%.mod"
+          Test-Path -Path %CONDA_PREFIX%\include\bmif_${{ env.BMI_VERSION }}.mod
           Test-Path -Path %CONDA_PREFIX%\include\bmif_2_0.mod
           Test-Path -Path "D:/a/bmi-fortran/bmi-fortran/build/%CONDA_PREFIX%/include/bmif_2_0.mod"
           Test-Path -Path ( Join-Path -Path ${{ github.workspace }}/build -ChildPath "%CONDA_PREFIX%/include/bmif_2_0.mod" )
@@ -62,3 +55,4 @@ jobs:
 # D:/a/bmi-fortran/bmi-fortran/build/%CONDA_PREFIX%/include/bmif_2_0.mod
 # D:/a/bmi-fortran/bmi-fortran/build
 # Join-Path -Path "path" -ChildPath "childpath"
+# $env:NAME
