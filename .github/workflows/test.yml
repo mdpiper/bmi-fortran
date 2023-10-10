@@ -31,9 +31,14 @@ jobs:
           environment-name: testing
           create-args: >-
             cmake
-            fortran-compiler
-            cxx-compiler
-            vs2019_win-64
+
+      - name: Install compilers (Unix)
+        if: matrix.os != 'windows-latest'
+        run: micromamba install fortran-compiler
+
+      - name: Install compilers (Windows)
+        if: matrix.os == 'windows-latest'
+        run: micromamba install fortran-compiler cxx-compiler vs2019_win-64
 
       # This is a no-op on Linux and macOS
       - uses: ilammy/msvc-dev-cmd@v1
