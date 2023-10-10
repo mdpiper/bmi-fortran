@@ -45,7 +45,7 @@ jobs:
         run: |
           Test-Path -Path %CONDA_PREFIX%\lib\libbmif.a
           Test-Path -Path %CONDA_PREFIX%\lib\libbmif_win.dll.a
-          Test-Path -Path %CONDA_PREFIX%\bin\libbmif_win.dll
+          Test-Path -Path %CONDA_PREFIX%\bin\libbmif_wi.dll
           Test-Path -Path %CONDA_PREFIX%\include\bmif_${{ env.BMI_VERSION }}.mod
 
       - name: Test (for machines)
@@ -54,7 +54,7 @@ jobs:
           if ( `
             ( Test-Path -Path %CONDA_PREFIX%\lib\libbmif.a ) -and `
             ( Test-Path -Path %CONDA_PREFIX%\lib\libbmif_win.dll.a ) -and `
-            ( Test-Path -Path %CONDA_PREFIX%\bin\libbmif_win.dll ) -and `
+            ( Test-Path -Path %CONDA_PREFIX%\bin\libbmif_wi.dll ) -and `
             ( Test-Path -Path %CONDA_PREFIX%\include\bmif_${{ env.BMI_VERSION }}.mod ) `
            ) { exit 0 }
 
