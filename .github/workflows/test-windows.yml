@@ -51,8 +51,10 @@ jobs:
           Test-Path -Path "%LIBRARY_INC%\\bmif_%BMI_VERSION%.mod"
           Test-Path -Path "%CONDA_PREFIX%/include/bmif_%BMI_VERSION%.mod"
           Test-Path -Path "D:/a/bmi-fortran/bmi-fortran/build/%CONDA_PREFIX%/include/bmif_2_0.mod"
+          if ( -not ( Test-Path -Path "%LIBRARY_INC%\\bmif_%BMI_VERSION%.mod" ) ){ exit 1 }
 
 # D:/a/bmi-fortran/bmi-fortran/build/%CONDA_PREFIX%/lib/libbmif.a
 # D:/a/bmi-fortran/bmi-fortran/build/%CONDA_PREFIX%/lib/libbmif_win.dll.a
 # D:/a/bmi-fortran/bmi-fortran/build/%CONDA_PREFIX%/bin/libbmif_win.dll
 # D:/a/bmi-fortran/bmi-fortran/build/%CONDA_PREFIX%/include/bmif_2_0.mod
+# D:/a/bmi-fortran/bmi-fortran/build
