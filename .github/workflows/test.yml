@@ -29,14 +29,15 @@ jobs:
         with:
           micromamba-version: latest
           environment-name: testing
+          init-shell: bash powershell
           create-args: >-
             cmake
             fortran-compiler
             cxx-compiler
 
-      - name: Install VS (Windows)
-        if: matrix.os == 'windows-latest'
-        run: micromamba install vs2019_win-64
+      # - name: Install VS (Windows)
+      #   if: matrix.os == 'windows-latest'
+      #   run: micromamba install vs2019_win-64
 
       # This is a no-op on Linux and macOS
       - uses: ilammy/msvc-dev-cmd@v1
