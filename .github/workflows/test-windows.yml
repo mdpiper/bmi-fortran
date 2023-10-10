@@ -40,13 +40,23 @@ jobs:
         working-directory: ${{ github.workspace }}/build
         run: cmake --build . --target install --config Release
 
-      - name: Test
+      - name: Check (for humans)
         working-directory: ${{ github.workspace }}/build
         run: |
           Test-Path -Path %CONDA_PREFIX%\lib\libbmif.a
           Test-Path -Path %CONDA_PREFIX%\lib\libbmif_win.dll.a
           Test-Path -Path %CONDA_PREFIX%\bin\libbmif_win.dll
           Test-Path -Path %CONDA_PREFIX%\include\bmif_${{ env.BMI_VERSION }}.mod
+
+      - name: Test (for machines)
+        working-directory: ${{ github.workspace }}/build
+        run: |
+          if ( `
+            ( Test-Path -Path %CONDA_PREFIX%\lib\libbmif.a ) -and `
+            ( Test-Path -Path %CONDA_PREFIX%\lib\libbmif_win.dll.a ) -and `
+            ( Test-Path -Path %CONDA_PREFIX%\bin\libbmif_win.dll ) -and `
+            ( Test-Path -Path %CONDA_PREFIX%\include\bmif_${{ env.BMI_VERSION }}.mod ) `
+           ) { exit 0 }
 
 
 # D:/a/bmi-fortran/bmi-fortran/build/%CONDA_PREFIX%/lib/libbmif.a
