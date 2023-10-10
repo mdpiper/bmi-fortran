@@ -51,10 +51,10 @@ jobs:
       - name: Test (for machines)
         working-directory: ${{ github.workspace }}/build
         run: |
-          if ( -not ( Test-Path -Path %CONDA_PREFIX%\lib\libbmif.a ) ){ exit 1 }
-          if ( -not ( Test-Path -Path %CONDA_PREFIX%\lib\libbmif_win.dll.a ) ){ exit 2 }
-          if ( -not ( Test-Path -Path %CONDA_PREFIX%\bin\libbmif_wi.dll ) ){ exit 3 }
-          if ( -not ( Test-Path -Path %CONDA_PREFIX%\include\bmif_${{ env.BMI_VERSION }}.mod ) ){ exit 4 }
+          if ( -not ( Test-Path -Path %CONDA_PREFIX%\lib\libbmif.a ) ){ exit 4 }
+          if ( -not ( Test-Path -Path %CONDA_PREFIX%\lib\libbmif_win.dll.a ) ){ exit 3 }
+          if ( -not ( Test-Path -Path %CONDA_PREFIX%\bin\libbmif_wi.dll ) ){ exit 2 }
+          if ( -not ( Test-Path -Path %CONDA_PREFIX%\include\bmif_${{ env.BMI_VERSION }}.mod ) ){ exit 1 }
 
 
 # D:/a/bmi-fortran/bmi-fortran/build/%CONDA_PREFIX%/lib/libbmif.a
