@@ -51,12 +51,10 @@ jobs:
       - name: Test (for machines)
         working-directory: ${{ github.workspace }}/build
         run: |
-          if ( `
-            ( Test-Path -Path %CONDA_PREFIX%\lib\libbmif.a ) -and `
-            ( Test-Path -Path %CONDA_PREFIX%\lib\libbmif_win.dll.a ) -and `
-            ( Test-Path -Path %CONDA_PREFIX%\bin\libbmif_wi.dll ) -and `
-            ( Test-Path -Path %CONDA_PREFIX%\include\bmif_${{ env.BMI_VERSION }}.mod ) `
-           ) { exit 0 }
+          if ( -not ( Test-Path -Path %CONDA_PREFIX%\lib\libbmif.a ) ){ exit 1 }
+          if ( -not ( Test-Path -Path %CONDA_PREFIX%\lib\libbmif_win.dll.a ) ){ exit 1 }
+          if ( -not ( Test-Path -Path %CONDA_PREFIX%\bin\libbmif_wi.dll ) ){ exit 1 }
+          if ( -not ( Test-Path -Path %CONDA_PREFIX%\include\bmif_${{ env.BMI_VERSION }}.mod ) ){ exit 1 }
 
 
 # D:/a/bmi-fortran/bmi-fortran/build/%CONDA_PREFIX%/lib/libbmif.a
@@ -70,3 +68,9 @@ jobs:
           # Test-Path -Path %CONDA_PREFIX%\include\bmif_2_0.mod
           # Test-Path -Path "D:/a/bmi-fortran/bmi-fortran/build/%CONDA_PREFIX%/include/bmif_2_0.mod"
           # if ( -not ( Test-Path -Path "%LIBRARY_INC%\\bmif_%BMI_VERSION%.mod" ) ){ exit 1 }
+          # if ( `
+          #   ( Test-Path -Path %CONDA_PREFIX%\lib\libbmif.a ) -and `
+          #   ( Test-Path -Path %CONDA_PREFIX%\lib\libbmif_win.dll.a ) -and `
+          #   ( Test-Path -Path %CONDA_PREFIX%\bin\libbmif_wi.dll ) -and `
+          #   ( Test-Path -Path %CONDA_PREFIX%\include\bmif_${{ env.BMI_VERSION }}.mod ) `
+          #  ) { exit 0 }
