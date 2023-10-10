@@ -14,6 +14,11 @@ jobs:
 
     runs-on: ${{ matrix.os }}
 
+    defaults:
+      if: matrix.os != 'windows-latest'
+      run:
+        shell: bash -l {0}
+
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
@@ -30,10 +35,6 @@ jobs:
             cmake
             fortran-compiler
             cxx-compiler
-
-      # - name: Install VS (Windows)
-      #   if: matrix.os == 'windows-latest'
-      #   run: micromamba install vs2019_win-64
 
       # This is a no-op on Linux and macOS
       - uses: ilammy/msvc-dev-cmd@v1
