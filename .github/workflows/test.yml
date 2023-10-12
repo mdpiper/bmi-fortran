@@ -78,6 +78,9 @@ jobs:
             fortran-compiler
             cxx-compiler
             vs2019_win-64
+          init-shell: >-
+            bash
+            powershell
 
       - uses: ilammy/msvc-dev-cmd@v1
 
