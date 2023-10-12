@@ -77,7 +77,7 @@ jobs:
             cmake
             fortran-compiler
             cxx-compiler
-            vs2019_win-64
+            vs2017_win-64
           init-shell: >-
             powershell
 
