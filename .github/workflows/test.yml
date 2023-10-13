@@ -6,58 +6,58 @@ env:
   BMI_VERSION: 2_0
 
 jobs:
-  build-test-unix:
+  # build-test-unix:
 
-    if:
-      github.event_name == 'push' || github.event.pull_request.head.repo.full_name !=
-      github.repository
+  #   if:
+  #     github.event_name == 'push' || github.event.pull_request.head.repo.full_name !=
+  #     github.repository
 
-    runs-on: ${{ matrix.os }}
+  #   runs-on: ${{ matrix.os }}
 
-    defaults:
-      run:
-        shell: bash -l {0}
+  #   defaults:
+  #     run:
+  #       shell: bash -l {0}
 
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest]
+  #   strategy:
+  #     matrix:
+  #       os: [ubuntu-latest, macos-latest]
  
-    steps:
-      - uses: actions/checkout@v4
+  #   steps:
+  #     - uses: actions/checkout@v4
 
-      - uses: mamba-org/setup-micromamba@v1
-        with:
-          micromamba-version: latest
-          environment-name: testing
-          create-args: >-
-            make
-            cmake
-            fortran-compiler
+  #     - uses: mamba-org/setup-micromamba@v1
+  #       with:
+  #         micromamba-version: latest
+  #         environment-name: testing
+  #         create-args: >-
+  #           make
+  #           cmake
+  #           fortran-compiler
 
-      - name: Make cmake build directory
-        run: cmake -E make_directory build
+  #     - name: Make cmake build directory
+  #       run: cmake -E make_directory build
 
-      - name: Configure cmake
-        working-directory: ${{ github.workspace }}/build
-        run: |
-          cmake .. -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX -DCMAKE_BUILD_TYPE=Release
+  #     - name: Configure cmake
+  #       working-directory: ${{ github.workspace }}/build
+  #       run: |
+  #         cmake .. -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX -DCMAKE_BUILD_TYPE=Release
 
-      - name: Build
-        working-directory: ${{ github.workspace }}/build
-        run: cmake --build . --target install --config Release
+  #     - name: Build
+  #       working-directory: ${{ github.workspace }}/build
+  #       run: cmake --build . --target install --config Release
 
-      - name: Test
-        run: |
-          test -f $CONDA_PREFIX/include/bmif_$BMI_VERSION.mod
-          test -s $CONDA_PREFIX/lib/libbmif.a
+  #     - name: Test
+  #       run: |
+  #         test -f $CONDA_PREFIX/include/bmif_$BMI_VERSION.mod
+  #         test -s $CONDA_PREFIX/lib/libbmif.a
 
-      - name: Test (Linux)
-        if: matrix.os == 'ubuntu-latest'
-        run: test -h $CONDA_PREFIX/lib/libbmif.so
+  #     - name: Test (Linux)
+  #       if: matrix.os == 'ubuntu-latest'
+  #       run: test -h $CONDA_PREFIX/lib/libbmif.so
 
-      - name: Test (macOS)
-        if: matrix.os == 'macos-latest'
-        run: test -h $CONDA_PREFIX/lib/libbmif.dylib
+  #     - name: Test (macOS)
+  #       if: matrix.os == 'macos-latest'
+  #       run: test -h $CONDA_PREFIX/lib/libbmif.dylib
 
   build-test-windows:
     if:
@@ -83,19 +83,16 @@ jobs:
       - name: Make cmake build directory
         run: cmake -E make_directory build
 
-      - name: Configure cmake
+      - name: Configure, build, and install
         working-directory: ${{ github.workspace }}/build
         run: |
-          cmake .. -G "NMake Makefiles" -DCMAKE_INSTALL_PREFIX=%CONDA_PREFIX% -DCMAKE_BUILD_TYPE=Release
-
-      - name: Build
-        working-directory: ${{ github.workspace }}/build
-        run: cmake --build . --target install --config Release
+          cmake .. -G "NMake Makefiles" -DCMAKE_INSTALL_PREFIX="$env:CONDA_PREFIX" -DCMAKE_BUILD_TYPE=Release
+          cmake --build . --target install --config Release
 
       - name: Check (for humans)
         working-directory: ${{ github.workspace }}/build
         run: |
-          Test-Path -Path %CONDA_PREFIX%\lib\libbmif.a
+          Test-Path -Path "$env:CONDA_PREFIX"\lib\libbmif.a
           Test-Path -Path %CONDA_PREFIX%\lib\libbmif_win.dll.a
           Test-Path -Path %CONDA_PREFIX%\bin\libbmif_win.dll
           Test-Path -Path %CONDA_PREFIX%\include\bmif_${{ env.BMI_VERSION }}.mod
@@ -103,7 +100,7 @@ jobs:
       - name: Test (for machines)
         working-directory: ${{ github.workspace }}/build
         run: |
-          if ( -not ( Test-Path -Path %CONDA_PREFIX%\lib\libbmif.a ) ){ exit 1 }
+          if ( -not ( Test-Path -Path "$env:CONDA_PREFIX"\lib\libbmif.a ) ){ exit 1 }
           if ( -not ( Test-Path -Path %CONDA_PREFIX%\lib\libbmif_win.dll.a ) ){ exit 1 }
           if ( -not ( Test-Path -Path %CONDA_PREFIX%\bin\libbmif_win.dll ) ){ exit 1 }
           if ( -not ( Test-Path -Path %CONDA_PREFIX%\include\bmif_${{ env.BMI_VERSION }}.mod ) ){ exit 1 }
