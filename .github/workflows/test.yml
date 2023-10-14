@@ -76,6 +76,7 @@ jobs:
           create-args: >-
             cmake
             cxx-compiler
+            fortran-compiler
           init-shell: >-
             powershell
 
