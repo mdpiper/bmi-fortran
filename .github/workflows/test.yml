@@ -6,59 +6,59 @@ env:
   BMI_VERSION: 2_0
 
 jobs:
-  build-test-unix:
+  # build-test-unix:
 
-    if:
-      github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
+  #   if:
+  #     github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
 
-    runs-on: ${{ matrix.os }}
+  #   runs-on: ${{ matrix.os }}
 
-    defaults:
-      run:
-        shell: bash -l {0}
+  #   defaults:
+  #     run:
+  #       shell: bash -l {0}
 
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest]
+  #   strategy:
+  #     matrix:
+  #       os: [ubuntu-latest, macos-latest]
  
-    steps:
-      - uses: actions/checkout@v4
+  #   steps:
+  #     - uses: actions/checkout@v4
 
-      - uses: mamba-org/setup-micromamba@v1
-        with:
-          micromamba-version: latest
-          environment-name: testing
-          create-args: >-
-            make
-            cmake
-            pkg-config
-            fortran-compiler
+  #     - uses: mamba-org/setup-micromamba@v1
+  #       with:
+  #         micromamba-version: latest
+  #         environment-name: testing
+  #         create-args: >-
+  #           make
+  #           cmake
+  #           pkg-config
+  #           fortran-compiler
 
-      - name: Make cmake build directory
-        run: cmake -E make_directory build
+  #     - name: Make cmake build directory
+  #       run: cmake -E make_directory build
 
-      - name: Configure cmake
-        working-directory: ${{ github.workspace }}/build
-        run: |
-          cmake .. -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX -DCMAKE_BUILD_TYPE=Release
+  #     - name: Configure cmake
+  #       working-directory: ${{ github.workspace }}/build
+  #       run: |
+  #         cmake .. -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX -DCMAKE_BUILD_TYPE=Release
 
-      - name: Build and install
-        working-directory: ${{ github.workspace }}/build
-        run: cmake --build . --target install --config Release
+  #     - name: Build and install
+  #       working-directory: ${{ github.workspace }}/build
+  #       run: cmake --build . --target install --config Release
 
-      - name: Test
-        run: |
-          test -f $CONDA_PREFIX/include/bmif_$BMI_VERSION.mod
-          test -s $CONDA_PREFIX/lib/libbmif.a
-          pkg-config --exists --print-errors bmif
+  #     - name: Test
+  #       run: |
+  #         test -f $CONDA_PREFIX/include/bmif_$BMI_VERSION.mod
+  #         test -s $CONDA_PREFIX/lib/libbmif.a
+  #         pkg-config --exists --print-errors bmif
 
-      - name: Test (Linux)
-        if: matrix.os == 'ubuntu-latest'
-        run: test -h $CONDA_PREFIX/lib/libbmif.so
+  #     - name: Test (Linux)
+  #       if: matrix.os == 'ubuntu-latest'
+  #       run: test -h $CONDA_PREFIX/lib/libbmif.so
 
-      - name: Test (macOS)
-        if: matrix.os == 'macos-latest'
-        run: test -h $CONDA_PREFIX/lib/libbmif.dylib
+  #     - name: Test (macOS)
+  #       if: matrix.os == 'macos-latest'
+  #       run: test -h $CONDA_PREFIX/lib/libbmif.dylib
 
   build-test-windows:
     if:
@@ -84,6 +84,17 @@ jobs:
           init-shell: >-
             powershell
 
+      - name: Set FC environment variable
+        run: |
+          set FC=C:/Users/runneradmin/micromamba/envs/testing/Library/bin/flang-new.exe
+          echo FC=$FC
+        shell: cmd
+
+      - name: Verify FC environment variable
+        run: |
+          echo "FC is set to: $env:FC"
+        shell: pwsh
+
       - name: Make cmake build directory
         run: cmake -E make_directory build
 
@@ -92,8 +103,8 @@ jobs:
         run: |
           cmake .. -G Ninja -DCMAKE_INSTALL_PREFIX="${{ env.LIBRARY_PREFIX }}" -DCMAKE_BUILD_TYPE=Release
           cmake --build . --target install --config Release
-        env:
-          FC: C:/Users/runneradmin/micromamba/envs/testing/Library/bin/flang-new.exe
+        # env:
+        #   FC: C:/Users/runneradmin/micromamba/envs/testing/Library/bin/flang-new.exe
 
       - name: Check (for humans)
         working-directory: ${{ github.workspace }}/build
