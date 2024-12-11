@@ -90,7 +90,7 @@ jobs:
 
       - name: Set the FC environment variable
         run: |
-          echo "FC=$CONDA_PREFIX/Library/bin/flang-new.exe" >> $GITHUB_ENV
+          echo "FC=$LIBRARY_PREFIX/bin/flang-new.exe" >> $GITHUB_ENV
         shell: bash
 
       - name: Show FC
@@ -102,8 +102,6 @@ jobs:
         run: |
           cmake -B _build -G Ninja -DCMAKE_INSTALL_PREFIX="${{ env.LIBRARY_PREFIX }}" -DCMAKE_BUILD_TYPE=Release
           cmake --build _build --target install --config Release
-        # env:
-        #   FC: C:/Users/runneradmin/micromamba/envs/testing/Library/bin/flang-new.exe
 
       - name: Check (for humans)
         run: |
