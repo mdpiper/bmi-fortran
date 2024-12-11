@@ -93,7 +93,7 @@ jobs:
           cmake .. -G Ninja -DCMAKE_INSTALL_PREFIX="${{ env.LIBRARY_PREFIX }}" -DCMAKE_BUILD_TYPE=Release
           cmake --build . --target install --config Release
         env:
-          FC: $env:CONDA_PREFIX\Library\bin\flang-new.exe
+          FC: ${{ env.LIBRARY_PREFIX }}\bin\flang-new.exe
 
       - name: Check (for humans)
         working-directory: ${{ github.workspace }}/build
