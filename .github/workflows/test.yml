@@ -84,14 +84,16 @@ jobs:
           init-shell: >-
             powershell
 
-      # - name: Set the FC environment variable
-      #   run: |
-      #     echo "FC=${{ env.CONDA_PREFIX }}/Library/bin/flang-new.exe" >> $GITHUB_ENV
-
       - name: Set the FC environment variable
         run: |
-          echo "FC=$LIBRARY_PREFIX/bin/flang-new.exe" >> $GITHUB_ENV
+          FC=${{ env.LIBRARY_PREFIX }}\bin\flang-new.exe
+          echo "FC=$FC" >> $GITHUB_ENV
         shell: bash
+
+      # - name: Set the FC environment variable
+      #   run: |
+      #     echo "FC=$CONDA_PREFIX/Library/bin/flang-new.exe" >> $GITHUB_ENV
+      #   shell: bash
 
       - name: Show FC
         run: |
