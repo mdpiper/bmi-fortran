@@ -93,9 +93,10 @@ jobs:
           echo "FC=$CONDA_PREFIX/Library/bin/flang-new.exe" >> $GITHUB_ENV
         shell: bash
 
-      - name: Show FC variable
+      - name: Show FC
         run: |
-          echo ${{ env.FC }}
+          echo $FC
+        shell: bash
 
       - name: Configure, build, and install
         run: |
