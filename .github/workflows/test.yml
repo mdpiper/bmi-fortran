@@ -84,33 +84,14 @@ jobs:
           init-shell: >-
             powershell
 
-      # - name: Set FC environment variable
-      #   run: |
-      #     set FC=C:/Users/runneradmin/micromamba/envs/testing/Library/bin/flang-new.exe
-      #     echo FC=$FC
-      #   shell: cmd
-
-      - name: Set FC environment variable globally
-        run: echo "FC=C:/Users/runneradmin/micromamba/envs/testing/Library/bin/flang-new.exe" >> $GITHUB_ENV
-
-      - name: Verify FC environment variable
-        run: |
-          echo "FC is set to: $env:FC"
-        shell: pwsh
-
-      - name: Make cmake build directory
-        run: cmake -E make_directory build
-
       - name: Configure, build, and install
-        working-directory: ${{ github.workspace }}/build
         run: |
-          cmake .. -G Ninja -DCMAKE_INSTALL_PREFIX="${{ env.LIBRARY_PREFIX }}" -DCMAKE_BUILD_TYPE=Release
-          cmake --build . --target install --config Release
-        # env:
-        #   FC: C:/Users/runneradmin/micromamba/envs/testing/Library/bin/flang-new.exe
+          cmake -B _build -G Ninja -DCMAKE_INSTALL_PREFIX="${{ env.LIBRARY_PREFIX }}" -DCMAKE_BUILD_TYPE=Release
+          cmake --build _build --target install --config Release
+        env:
+          FC: C:/Users/runneradmin/micromamba/envs/testing/Library/bin/flang-new.exe
 
       - name: Check (for humans)
-        working-directory: ${{ github.workspace }}/build
         run: |
           Test-Path -Path ${{ env.LIBRARY_PREFIX }}\lib\bmif.lib
           Test-Path -Path ${{ env.LIBRARY_PREFIX }}\bin\bmif.dll
@@ -119,7 +100,6 @@ jobs:
           pkg-config --exists --print-errors bmif
 
       - name: Test (for machines)
-        working-directory: ${{ github.workspace }}/build
         run: |
           if ( -not ( Test-Path -Path ${{ env.LIBRARY_PREFIX }}\lib\bmif.lib ) ){ exit 1 }
           if ( -not ( Test-Path -Path ${{ env.LIBRARY_PREFIX }}\bin\bmif.dll ) ){ exit 1 }
