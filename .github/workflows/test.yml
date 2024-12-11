@@ -84,11 +84,14 @@ jobs:
           init-shell: >-
             powershell
 
-      - name: Set FC environment variable
-        run: |
-          set FC=C:/Users/runneradmin/micromamba/envs/testing/Library/bin/flang-new.exe
-          echo FC=$FC
-        shell: cmd
+      # - name: Set FC environment variable
+      #   run: |
+      #     set FC=C:/Users/runneradmin/micromamba/envs/testing/Library/bin/flang-new.exe
+      #     echo FC=$FC
+      #   shell: cmd
+
+      - name: Set FC environment variable globally
+        run: echo "FC=C:/Users/runneradmin/micromamba/envs/testing/Library/bin/flang-new.exe" >> $GITHUB_ENV
 
       - name: Verify FC environment variable
         run: |
