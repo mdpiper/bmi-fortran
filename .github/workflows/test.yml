@@ -74,7 +74,7 @@ jobs:
             cxx-compiler
             fortran-compiler
           init-shell: >-
-            pwsh
+            powershell
 
       - name: Set the FC environment variable to the Fortran conda compiler
         run: |
